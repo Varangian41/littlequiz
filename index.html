@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+<body>
+<div id="wrapper">
+
+    <div id="header">
+        <div id="button-wrapper"></div>
+    </div>
+
+    <div class="container" id="main">
+
+        <div class="row">
+
+            <div class="col-md-8 offset-md-2 col-sm-10 offset-sm-1 col-xs-12">
+
+                <div id="quizDisplay" class="form-control">
+                    <h1>Quiz</h1>
+                    <h2 id="question">Question</h2>
+                    <form autocomplete="off">
+                        <input type="radio" name="answer" id="inp0"><span id="0">Option1</span><br>
+                        <input type="radio" name="answer" id="inp1"><span id="1">Option2</span><br>
+                        <input type="radio" name="answer" id="inp2"><span id="2">Option3</span><br>
+                        <input type="radio" name="answer" id="inp3"><span id="3">Option4</span><br>
+                    </form>
+                </div>
+
+                <div id="resultDisplay" class="hide alert alert-info col-12">
+                    <h3 id="scoreDisplay">Score: </h3>
+                </div>
+
+                <div id="buttons" class="form-control">
+                    <button id="back" class="btn btn-info">Back</button>
+                    <button id="next" class="btn btn-success">Next</button>
+                    <button id="reset" class="hide btn btn-danger">Reset</button>
+                </div>
+
+                <div id="alert" class="alert alert-warning col-12 hide" role="alert">
+                    Select an answer!
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="footer">
+        
+    </div>
+
+</div>
+
+</body>
+<script type="text/javascript" src="./js/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="./js/appclasses.js"></script>
+</html>
