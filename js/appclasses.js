@@ -19,7 +19,7 @@ class DataController {
         this.Data.allQuestions = allQuestions;
     }
 
-    updateAnswers( ans) {
+    updateAnswers(ans) {
         if (ans !== false){
             this.Data.answers[this.Data.position] = ans;
             if (this.Data.answers[this.Data.position] === this.Data.allQuestions[this.Data.position].correct) {
@@ -29,42 +29,22 @@ class DataController {
         }
     }
 
-    stepBack() {
-
-        if (this.Data.position !== 0) {
-            this.Data.position -= 1;
-        }
-
-        if (this.Data.score !== 0) {
-            this.Data.score -= 1;
-        }
-
-    }
-
 }
 
 class UIController {
 
     constructor() {
         this.DOMStrings = {
-            next: 'next',
-            back: 'back',
             reset: 'reset',
-            alert: 'alert',
-            o0: '0',
-            o1: '1',
-            o2: '2',
-            o3: '3',
-            input0: 'inp0',
-            input1: 'inp1',
-            input2: 'inp2',
-            input3: 'inp3',
             question: 'question',
-            radios: 'input',
             quizDisp: 'quizDisplay',
             resDisp: 'resultDisplay',
             scoreDisp: 'scoreDisplay',
-            main: 'main'
+            main: 'main',
+            header: 'header',
+            footer: 'footer',
+            startBtn: 'start-button',
+            buttonWrapper: 'button-wrapper'
         };
     }
 
@@ -80,103 +60,26 @@ class UIController {
 
     }
 
-    checkSel() {
-
-        let check = false;
-        document.querySelectorAll(this.DOMStrings.radios).forEach(cur => {
-            if ($(cur).prop('checked') === true) {
-                check = true;
-                this.resetWarning();
-            }
-        });
-
-        if (check === false) {
-            this.displayWarning();
-        }
-
-    }
-
-    checkAnswer() {
-
-        let ans = -1;
-        document.querySelectorAll(this.DOMStrings.radios).forEach((cur, ind) => {
-
-            if ($(cur).prop('checked') === true) {
-                ans = ind;
-                console.log(ans);
-            }
-        });
-
-        if (ans !== -1){
-            return ans;
-        } else return false;
-
-    }
-
     finishQuiz(el) {
 
         document.getElementById(this.DOMStrings.resDisp).classList.toggle('hide');
         document.getElementById(this.DOMStrings.quizDisp).classList.toggle('hide');
-        document.getElementById(this.DOMStrings.next).classList.toggle('hide');
-        document.getElementById(this.DOMStrings.back).classList.toggle('hide');
-        document.getElementById(this.DOMStrings.reset).classList.toggle('hide');
         document.getElementById(this.DOMStrings.scoreDisp).textContent += `${el.score} out of ${el.allQuestions.length}`;
 
 
     }
 
-    resetCheck(el) {
+    nextQuestion(el) {
 
-        if (el.answers[el.position] || el.answers[el.position] === 0) {
-            this.fetchCheck(el)
-        } else {
-            $(`#inp${el.answers[el.position-1]}`).prop('checked', false);
-        }
-
-    }
-
-    displayWarning() {
-
-        if (document.getElementById(this.DOMStrings.alert).classList.contains('hide')) {
-            document.getElementById(this.DOMStrings.alert).classList.remove('hide');
-        }
-
-
-    }
-
-    resetWarning() {
-
-        if(!document.getElementById(this.DOMStrings.alert).classList.contains('hide'))
-        document.getElementById(this.DOMStrings.alert).classList.add('hide');
-
-    }
-
-    fetchCheck(el) {
-
-            $(`#inp${el.answers[el.position]}`).prop('checked', true);
-
-    }
-
-    backOne(el) {
-
-        this.setQuestion(el);
-        this.fetchCheck(el);
-        document.getElementById(this.DOMStrings.next).textContent = 'Next';
-
-    }
-
-    nextQuestion (el) {
-
-        if (el.position < (el.allQuestions.length - 1)) {
+        if (el.position <= (el.allQuestions.length - 1)) {
 
             this.setQuestion(el);
-            this.resetCheck(el);
-
-        }else if (el.position === (el.allQuestions.length - 1)) {
-
-            this.setQuestion(el);
-            this.resetCheck(el);
-            document.getElementById(this.DOMStrings.next).textContent = 'Finish!';
+            document.getElementById(this.DOMStrings.quizDisp).classList.remove('enter');
+            document.getElementById(this.DOMStrings.quizDisp).classList.add('exit');
+            setTimeout(() => {
+                document.getElementById(this.DOMStrings.quizDisp).classList.remove('exit');
+                document.getElementById(this.DOMStrings.quizDisp).classList.add('enter');
+            }, 300)
 
         } else {
 
@@ -186,10 +89,24 @@ class UIController {
 
     }
 
-    resetOpacity() {
+    timeoutNext() {
 
-        document.getElementById(this.DOMStrings.main).style.opacity = 0;
+    }
 
+    timeoutStart() {
+        setTimeout(() => {
+            document.getElementById(this.DOMStrings.startBtn).style.display = 'none'; 
+            document.getElementById(this.DOMStrings.buttonWrapper).style.display = 'none';
+            document.getElementById(this.DOMStrings.quizDisp).classList.add('enter');
+            document.getElementById(this.DOMStrings.quizDisp).classList.remove('start-position');
+        }, 300);
+    }
+
+    startQuiz() {
+        document.getElementById(this.DOMStrings.header).classList.add('open-up', 'small-headfoot');
+        document.getElementById(this.DOMStrings.footer).classList.add('open-up', 'small-headfoot');
+        document.getElementById(this.DOMStrings.startBtn).classList.add('hide-btn');
+        this.timeoutStart();       
     }
 
 }
@@ -201,77 +118,31 @@ class AppController {
         this.UICtrl = UiCtrl;
     }
 
-    handleNext() {
+    handleAnswer() {
 
-        const self = this;
+        document.getElementById(this.UICtrl.DOMStrings.quizDisp).addEventListener('click', (event) => {
 
-        document.getElementById(this.UICtrl.DOMStrings.next).addEventListener('click', function () {
-
-            self.UICtrl.resetOpacity();
-            self.handleLoad();
-            self.UICtrl.checkSel();
-            let answer = self.UICtrl.checkAnswer();
-            self.DataCtrl.updateAnswers(answer);
-            self.UICtrl.nextQuestion(self.DataCtrl.Data);
-
-        })
-
-    };
-
-    handleBack() {
-
-        const self = this;
-
-        document.getElementById(this.UICtrl.DOMStrings.back).addEventListener('click', function () {
-
-            self.UICtrl.resetOpacity();
-            self.handleLoad();
-            self.DataCtrl.stepBack(self.DataCtrl.Data);
-            self.UICtrl.backOne(self.DataCtrl.Data);
-
-        })
-
-    };
-
-    handleReset() {
-
-        document.getElementById(this.UICtrl.DOMStrings.reset).addEventListener('click', function () {
-
-            location.reload();
-
-        })
-    };
-
-     handleRadio() {
-
-        document.querySelectorAll(this.UICtrl.DOMStrings.radios).forEach((cur) => {
-
-            cur.addEventListener('click', function () {
-
-                $('input').attr('checked', false);
-                $(`#${cur.id}`).attr('checked', true);
-
-            });
+            if (event.target.tagName === 'BUTTON') {
+                    this.DataCtrl.updateAnswers(parseInt(event.target.getAttribute('id'), 10));
+                    this.UICtrl.nextQuestion(this.DataCtrl.Data);
+            }
 
         });
 
-    };
+    }
 
-    handleLoad() {
+    handleStart() {
 
-        $('#main').animate({opacity: 1}, 500);
+        document.querySelector('#start-button').addEventListener('click', () => {
+            this.UICtrl.startQuiz();
+        });
 
-    };
-
-    
+    }
 
     init() {
 
-        this.handleLoad();
-        this.handleNext();
-        this.handleBack();
-        this.handleRadio();
-        this.handleReset();
+        this.handleAnswer();
+        this.handleStart();
         this.UICtrl.setQuestion(this.DataCtrl.Data);
 
     }
