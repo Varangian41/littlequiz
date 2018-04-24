@@ -29,6 +29,12 @@ class DataController {
         }
     }
 
+    resetData() {
+        this.Data.position = 0;
+        this.Data.answers = [];
+        this.Data.score = 0;
+    }
+
 }
 
 class UIController {
@@ -63,7 +69,12 @@ class UIController {
     finishQuiz(el) {
 
         document.getElementById(this.DOMStrings.resDisp).classList.toggle('hide');
-        document.getElementById(this.DOMStrings.quizDisp).classList.toggle('hide');
+        document.getElementById(this.DOMStrings.quizDisp).classList.remove('enter');
+        document.getElementById(this.DOMStrings.quizDisp).classList.add('exit');
+        setTimeout(() => {
+            document.getElementById(this.DOMStrings.quizDisp).classList.remove('exit');
+            document.getElementById(this.DOMStrings.quizDisp).classList.toggle('hide');
+        }, 300);
         document.getElementById(this.DOMStrings.scoreDisp).textContent += `${el.score} out of ${el.allQuestions.length}`;
 
 
@@ -123,8 +134,8 @@ class AppController {
         document.getElementById(this.UICtrl.DOMStrings.quizDisp).addEventListener('click', (event) => {
 
             if (event.target.tagName === 'BUTTON') {
-                    this.DataCtrl.updateAnswers(parseInt(event.target.getAttribute('id'), 10));
-                    this.UICtrl.nextQuestion(this.DataCtrl.Data);
+                this.DataCtrl.updateAnswers(parseInt(event.target.getAttribute('id'), 10));
+                this.UICtrl.nextQuestion(this.DataCtrl.Data);
             }
 
         });
@@ -135,6 +146,15 @@ class AppController {
 
         document.querySelector('#start-button').addEventListener('click', () => {
             this.UICtrl.startQuiz();
+        });
+
+    }
+
+    handleRestart() {
+
+        document.getElementById(this.UICtrl.DOMStrings.reset).addEventListener('click', () => {
+            this.UICtrl.restartQuiz();
+            this.DataCtrl.resetData();
         });
 
     }

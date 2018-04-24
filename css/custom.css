@@ -148,6 +148,10 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+.rotate {
+    animation: rotate 500ms ease-in;
+}
+
 @keyframes hide-btn {
     0%{
         transform: scale(1);
