@@ -82,6 +82,11 @@ h1, h2, h3, h4, h5, h6 {
     color: #000000;
 }
 
+.button-large:active {
+    background-color: #000000 !important;
+    color: #FFFFFF !important;
+}
+
 .start-position {
     transform: translateX(1600px) !important;
 }
@@ -91,8 +96,29 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 20px;
 }
 
+button:focus {
+    box-shadow: none !important;
+}
+
 #quizDisplay button.button-large:nth-child(2n) {
     float: right;
+}
+
+#resultDisplay {
+    text-align: center;
+}
+
+#scoreDisplay {
+    margin-top: 50px;
+}
+
+#reset {
+    margin-top: 200px;
+}
+
+.result-hidden {
+    opacity: 0;
+    transform: scale(0);
 }
 
 #quizDisplay, #resultDisplay, #alert, #buttons {
@@ -116,14 +142,6 @@ h1, h2, h3, h4, h5, h6 {
     /* box-shadow: 0 0 20px #000000; */
     /* animation: open-up 1000ms ease-out; */
     z-index: 90;
-}
-
-.open-up {
-    animation: open-up 300ms linear;
-}
-
-.hide-btn {
-    animation: hide-btn 300ms ease-out !important;
 }
 
 @keyframes rotate {
@@ -164,6 +182,10 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+.hide-btn {
+    animation: hide-btn 300ms ease-out !important;
+}
+
 @keyframes open-up {
     0% {
         height: 50vh;
@@ -179,6 +201,10 @@ h1, h2, h3, h4, h5, h6 {
         height: 100px;
         box-shadow: 0 0 20px #000000;
     }
+}
+
+.open-up {
+    animation: open-up 300ms linear;
 }
 
 @keyframes enter {
@@ -216,4 +242,20 @@ h1, h2, h3, h4, h5, h6 {
 
 .exit {
     animation: exit 300ms ease;
+}
+
+@keyframes result {
+    0% {
+        opacity: 0;
+        transform: scale(0)
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1)
+    }
+}
+
+.result {
+    animation: result 300ms ease;
 }
