@@ -53,7 +53,9 @@ class UIController {
             footer: document.getElementById('footer'),
             startBtn: document.getElementById('start-button'),
             buttonWrapper: document.getElementById('button-wrapper'),
-            progressBar: document.getElementById('progress-bar')
+            progressBar: document.getElementById('progress-bar'),
+            closeIcon: document.querySelector('.close-icon'),
+            closeQuiz: document.querySelector('.close-quiz')
         };
     }
 
@@ -124,6 +126,8 @@ class UIController {
         this.DOMStrings.header.classList.add('open-up', 'small-headfoot');
         this.DOMStrings.footer.classList.add('open-up', 'small-headfoot');
         this.DOMStrings.startBtn.classList.add('hide-btn');
+        this.DOMStrings.closeIcon.classList.remove('hide');
+        this.DOMStrings.closeQuiz.classList.remove('hide');
         this.timeoutStart();       
     }
 
@@ -139,6 +143,8 @@ class UIController {
         this.DOMStrings.resDisp.classList.add('hide', 'result-hidden');
         this.DOMStrings.quizDisp.classList.remove('hide');
         this.DOMStrings.quizDisp.classList.add('start-position');
+        this.DOMStrings.closeIcon.classList.add('hide');
+        this.DOMStrings.closeQuiz.classList.add('hide');
         this.DOMStrings.scoreDisp.textContent = 'Your Score is: ';
         
     }
@@ -185,11 +191,22 @@ class AppController {
 
     }
 
+    handleClose() {
+
+        this.UICtrl.DOMStrings.closeQuiz.addEventListener('click', () => {
+            this.UICtrl.restartQuiz();
+            this.DataCtrl.resetData();
+            this.UICtrl.setQuestion(this.DataCtrl.Data);
+        });
+
+    }
+
     init() {
 
         this.handleAnswer();
         this.handleStart();
         this.handleRestart();
+        this.handleClose();
         this.UICtrl.setQuestion(this.DataCtrl.Data);
 
     }

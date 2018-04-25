@@ -149,6 +149,48 @@ button:focus {
     transition: width 200ms ease-in;
 }
 
+.close-quiz {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top:0;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.close-icon {    
+    position: absolute;
+    height: 2px;
+    width: 15px;
+    top: 24px;
+    left: 18px;
+    background: transparent;
+}
+
+.close-icon:before {
+    content: " ";
+    position: absolute;
+    height: 2px;
+    width: 15px;
+    top: -5px;
+    left: 0;
+    background-color: #FFFFFF;
+    transform: rotateZ(45deg) scaleX(1.4) translate(3px,3px);
+}
+
+.close-icon:after {
+    content: " ";
+    position: absolute;
+    height: 2px;
+    width: 15px;
+    top: 5px;
+    left: 0;
+    background-color: #FFFFFF;
+    transform: rotateZ(-45deg) scaleX(1.4) translate(3px,-3px);
+}
+
+
 @keyframes rotate {
     0% {
         transform: scale(0) rotate(-360deg);
