@@ -13,9 +13,7 @@
     <div id="background-image"></div>
 
     <div id="header">
-        <div id="button-wrapper">
-            <button id="start-button" class="btn btn-info button-large">Start Game</button>
-        </div>
+        <button id="start-button" class="btn btn-info button-large">Start Game</button>
     </div>
 
     <div class="container" id="main">
@@ -26,12 +24,12 @@
 
                 <div id="quizDisplay" class="start-position">
                     <h2 id="question">Question</h2>
-                    <form autocomplete="off">
+                    <div id="button-wrapper">
                         <button type="button" name="answer" class="btn btn-primary button-large" id="0">Option1</button>
                         <button type="button" name="answer" class="btn btn-primary button-large" id="1">Option2</button>
                         <button type="button" name="answer" class="btn btn-primary button-large" id="2">Option3</button>
                         <button type="button" name="answer" class="btn btn-primary button-large" id="3">Option4</button>
-                    </form>
+                    </div>
                 </div>
 
                 <div id="resultDisplay" class="hide result-hidden">
@@ -46,7 +44,7 @@
     </div>
 
     <div id="footer">
-        
+        <div id="progress-bar"></div>
     </div>
 
 </div>

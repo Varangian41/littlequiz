@@ -33,6 +33,10 @@ class DataController {
         this.Data.score = 0;
     }
 
+    progressHelper() {
+        return ((this.Data.position/this.Data.allQuestions.length)*100);
+    }
+
 }
 
 class UIController {
@@ -48,7 +52,8 @@ class UIController {
             header: document.getElementById('header'),
             footer: document.getElementById('footer'),
             startBtn: document.getElementById('start-button'),
-            buttonWrapper: document.getElementById('button-wrapper')
+            buttonWrapper: document.getElementById('button-wrapper'),
+            progressBar: document.getElementById('progress-bar')
         };
     }
 
@@ -79,6 +84,10 @@ class UIController {
 
     }
 
+    extendProgress(width) {
+        this.DOMStrings.progressBar.style.width = `${width}%`;
+    }
+
     questionTransition() {
         this.DOMStrings.quizDisp.classList.remove('enter');
         this.DOMStrings.quizDisp.classList.add('exit');
@@ -105,8 +114,7 @@ class UIController {
 
     timeoutStart() {
         setTimeout(() => {
-            this.DOMStrings.startBtn.style.display = 'none'; 
-            this.DOMStrings.buttonWrapper.style.display = 'none';
+            this.DOMStrings.startBtn.style.display = 'none';
             this.DOMStrings.quizDisp.classList.add('enter');
             this.DOMStrings.quizDisp.classList.remove('start-position');
         }, 300);
@@ -117,6 +125,22 @@ class UIController {
         this.DOMStrings.footer.classList.add('open-up', 'small-headfoot');
         this.DOMStrings.startBtn.classList.add('hide-btn');
         this.timeoutStart();       
+    }
+
+    restartQuiz() {
+        this.DOMStrings.header.classList.add('close-up');
+        this.DOMStrings.header.classList.remove('small-headfoot');
+        this.DOMStrings.footer.classList.add('close-up');
+        this.DOMStrings.footer.classList.remove('small-headfoot');
+        this.DOMStrings.startBtn.classList.remove('hide-btn');
+        this.DOMStrings.startBtn.style.display = 'inline';
+        this.DOMStrings.progressBar.style.width = '0';
+        this.DOMStrings.resDisp.classList.remove('result');
+        this.DOMStrings.resDisp.classList.add('hide', 'result-hidden');
+        this.DOMStrings.quizDisp.classList.remove('hide');
+        this.DOMStrings.quizDisp.classList.add('start-position');
+        this.DOMStrings.scoreDisp.textContent = 'Your Score is: ';
+        
     }
 
 }
@@ -135,6 +159,7 @@ class AppController {
             if (event.target.tagName === 'BUTTON') {
                 this.DataCtrl.updateAnswers(parseInt(event.target.getAttribute('id'), 10));
                 this.UICtrl.nextQuestion(this.DataCtrl.Data);
+                this.UICtrl.extendProgress(this.DataCtrl.progressHelper());
             }
 
         });
@@ -153,9 +178,9 @@ class AppController {
 
         this.UICtrl.DOMStrings.reset.addEventListener('click', () => {
             // CONTINUE WORK HERE!
-            location.reload();
-            // this.UICtrl.restartQuiz();
-            // this.DataCtrl.resetData();
+            this.UICtrl.restartQuiz();
+            this.DataCtrl.resetData();
+            this.UICtrl.setQuestion(this.DataCtrl.Data);
         });
 
     }
@@ -174,7 +199,7 @@ class AppController {
 
 const Q1 = new Question('What is the capital of France?', ['Montpellier', 'Paris', 'Bordeaux', 'Marseille'], 1);
 const Q2 = new Question('Who was the last tsar of Russia?', ['Alexander III', 'Ivan the Terrible', 'Alexander I', 'Nicholas II'], 3);
-const Q3 = new Question('What is the dominant religion of India', ['Hinduism', 'Buddhism', 'Islam', 'Christianity'], 0);
+const Q3 = new Question('What is the dominant religion of India?', ['Hinduism', 'Buddhism', 'Islam', 'Christianity'], 0);
 const Q4 = new Question('When did WWII start?', ['1941', '1939', '1940', '1937'], 1);
 const Q5 = new Question('Which composer wrote the Ode of Joy?', ['Mozart', 'Bach', 'Beethoven', 'Strauss'], 2);
 
